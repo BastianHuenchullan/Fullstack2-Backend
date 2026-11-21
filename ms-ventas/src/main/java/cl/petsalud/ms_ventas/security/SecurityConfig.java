@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/boletas").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/boletas/mias").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/boletas/mis-boletas").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/boletas", "/api/v1/boletas/*").hasAnyRole("ADMIN", "VENDEDOR")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/boletas/*/estado").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/boletas/usuario/*").hasRole("ADMIN")

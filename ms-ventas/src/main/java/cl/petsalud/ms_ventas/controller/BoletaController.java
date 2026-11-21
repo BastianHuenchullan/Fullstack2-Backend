@@ -32,7 +32,7 @@ public class BoletaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(boletaService.registrarCompra(request, usuarioId));
     }
 
-    @GetMapping("/mias")
+    @GetMapping("/mis-boletas")
     @Operation(summary = "Obtener compras del usuario autenticado")
     public List<BoletaResponse> mias(@AuthenticationPrincipal UsuarioAutenticado usuario) {
         return boletaService.listarPorUsuario(usuario.id());
