@@ -24,6 +24,7 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
+      SPRING_PROFILES_ACTIVE: ${USUARIOS_PROFILE:-default}
     depends_on:
       mysql:
         condition: service_healthy

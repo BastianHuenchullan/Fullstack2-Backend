@@ -1,4 +1,4 @@
-package cl.petsalud.ms_usuarios;
+package cl.petsalud.msusuarios;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
