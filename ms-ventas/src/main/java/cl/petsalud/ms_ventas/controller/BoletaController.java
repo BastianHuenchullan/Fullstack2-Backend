@@ -34,18 +34,18 @@ public class BoletaController {
 
     @GetMapping("/mis-boletas")
     @Operation(summary = "Obtener compras del usuario autenticado")
-    public List<BoletaResponse> mias(@AuthenticationPrincipal UsuarioAutenticado usuario) {
+    public List<BoletaResponse> misBoletas(@AuthenticationPrincipal UsuarioAutenticado usuario) {
         return boletaService.listarPorUsuario(usuario.id());
     }
 
     @GetMapping
-    @Operation(summary = "Listar todas las boletas (ADMIN, VENDEDOR)")
+    @Operation(summary = "Listar todas las boletas (ADMIN)")
     public List<BoletaResponse> listar() {
         return boletaService.listarTodas();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener detalle de una boleta por ID (ADMIN, VENDEDOR)")
+    @Operation(summary = "Obtener detalle de una boleta por ID (ADMIN)")
     public BoletaResponse obtener(@PathVariable Long id) {
         return boletaService.obtenerPorId(id);
     }
