@@ -35,15 +35,6 @@ public class DataLoader implements CommandLineRunner {
                 Rol.ADMIN
         );
 
-        Usuario vendedor = crearUsuario(
-                "22222222-2",
-                "Vendedor",
-                "PetSalud",
-                "vendedor@petsalud.cl",
-                "Vendedor1234",
-                Rol.VENDEDOR
-        );
-
         Usuario cliente = crearUsuario(
                 "33333333-3",
                 "Cliente",
@@ -54,7 +45,7 @@ public class DataLoader implements CommandLineRunner {
         );
 
         usuarioRepository.saveAll(
-                List.of(administrador, vendedor, cliente)
+                List.of(administrador, cliente)
         );
     }
 

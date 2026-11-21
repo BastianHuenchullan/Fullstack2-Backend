@@ -98,7 +98,7 @@ class UsuarioServiceTest {
                 "Gonzalez",
                 "carlos@petsalud.cl",
                 "Carlos1234",
-                Rol.VENDEDOR
+                Rol.CLIENTE
         );
 
         when(usuarioRepository.findByCorreoIgnoreCase(solicitud.correo()))
@@ -121,11 +121,11 @@ class UsuarioServiceTest {
 
         assertEquals(2L, respuesta.id());
         assertEquals("Carlos", respuesta.nombre());
-        assertEquals(Rol.VENDEDOR, respuesta.rol());
+        assertEquals(Rol.CLIENTE, respuesta.rol());
 
         verify(usuarioRepository).save(argThat(u ->
                 "passwordCodificada".equals(u.getPassword())
-                        && u.getRol() == Rol.VENDEDOR
+                        && u.getRol() == Rol.CLIENTE
         ));
     }
 
@@ -138,7 +138,7 @@ class UsuarioServiceTest {
                 "Gonzalez",
                 "juan@gmail.com",
                 "Carlos1234",
-                Rol.VENDEDOR
+                Rol.CLIENTE
         );
 
         when(usuarioRepository.findByCorreoIgnoreCase(solicitud.correo()))
@@ -164,7 +164,7 @@ class UsuarioServiceTest {
                 "Perez",
                 "juan@gmail.com",
                 "",
-                Rol.VENDEDOR
+                Rol.ADMIN
         );
 
         when(usuarioRepository.findById(1L))
@@ -182,7 +182,7 @@ class UsuarioServiceTest {
         UsuarioResponse respuesta =
                 usuarioService.actualizar(1L, solicitud);
 
-        assertEquals(Rol.VENDEDOR, respuesta.rol());
+        assertEquals(Rol.ADMIN, respuesta.rol());
         assertEquals("passwordCodificada", usuario.getPassword());
 
         verifyNoInteractions(passwordEncoder);
