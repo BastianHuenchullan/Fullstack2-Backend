@@ -1,6 +1,8 @@
 package cl.petsalud.ms_ventas.security;
 
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -34,21 +35,28 @@ public class SecurityConfig {
                 }))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((req, res, e) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No autenticado"))
-                        .accessDeniedHandler((req, res, e) -> res.sendError(HttpServletResponse.SC_FORBIDDEN, "Sin permisos"))
+                        .authenticationEntryPoint((req, res, e) ->
+                                escribirError(res, 401, "NO_AUTORIZADO", "Debes iniciar sesión"))
+                        .accessDeniedHandler((req, res, e) ->
+                                escribirError(res, 403, "ACCESO_DENEGADO", "No tienes permisos para esta operación"))
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/error").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/boletas").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/boletas/mis-boletas").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/boletas", "/api/v1/boletas/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/boletas", "/api/v1/boletas/*", "/api/v1/reportes/**").hasAnyRole("ADMIN", "VENDEDOR")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/boletas/*/estado").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/boletas/usuario/*").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/reportes/resumen").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    private void escribirError(HttpServletResponse response, int estado, String codigo, String mensaje) throws IOException {
+        response.setStatus(estado);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"codigo\":\"" + codigo + "\",\"mensaje\":\"" + mensaje + "\",\"errores\":[]}");
     }
 }

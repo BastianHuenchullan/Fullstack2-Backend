@@ -39,13 +39,13 @@ public class BoletaController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar todas las boletas (ADMIN)")
+    @Operation(summary = "Listar todas las boletas (ADMIN, VENDEDOR)")
     public List<BoletaResponse> listar() {
         return boletaService.listarTodas();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener detalle de una boleta por ID (ADMIN)")
+    @Operation(summary = "Obtener detalle de una boleta por ID (ADMIN, VENDEDOR)")
     public BoletaResponse obtener(@PathVariable Long id) {
         return boletaService.obtenerPorId(id);
     }
