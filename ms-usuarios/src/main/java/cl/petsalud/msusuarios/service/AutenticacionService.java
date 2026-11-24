@@ -57,17 +57,13 @@ public class AutenticacionService {
     }
 
     public AutenticacionResponse iniciarSesion(LoginRequest solicitud) {
-
-        Usuario usuario = usuarioRepository
-                .findByCorreoIgnoreCase(solicitud.correo().trim())
-                .orElseThrow(() -> new ExcepcionNegocio(
+        Usuario usuario = usuarioRepository.findByCorreoIgnoreCase(solicitud.correo().trim()).orElseThrow(() -> new ExcepcionNegocio(
                         HttpStatus.UNAUTHORIZED,
                         "CREDENCIALES_INVALIDAS",
                         "Correo o contraseña incorrectos"
                 ));
 
-        if (!passwordEncoder.matches(
-                solicitud.password(), usuario.getPassword())) {
+        if (!passwordEncoder.matches(solicitud.password(), usuario.getPassword())) {
             throw new ExcepcionNegocio(
                     HttpStatus.UNAUTHORIZED,
                     "CREDENCIALES_INVALIDAS",
